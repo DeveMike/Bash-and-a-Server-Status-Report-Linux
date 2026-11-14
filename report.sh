@@ -35,23 +35,25 @@ cat > "$TEMP_FILE" <<EOF
     <title>Week 3 – Server Status Report</title>
     <style>
         body {
-            font-family: system-ui, sans-serif;
+            font-family: "Courier New", monospace;
             max-width: 900px;
             margin: 40px auto;
             padding: 0 20px;
             line-height: 1.6;
-            background: #f1f5f9;
-            color: #172033;
+            background: #000000;
+            color: #00ff41;
         }
 
-        h1, h2 {
-            color: #173b65;
+        h1, h2, h3 {
+            color: #00ff41;
+            text-shadow: 0 0 8px #00ff41;
         }
 
         section {
             margin: 24px 0;
             padding: 24px;
-            background: white;
+            background: #0a0f0a;
+            border: 1px solid #00ff41;
             border-radius: 12px;
         }
 
@@ -65,28 +67,28 @@ cat > "$TEMP_FILE" <<EOF
         }
 
         th, td {
-            border: 1px solid #cbd5e1;
+            border: 1px solid #008f11;
             padding: 12px;
             text-align: left;
         }
 
         th {
-            background: #dbeafe;
+            background: #003b00;
         }
 
         code {
-            background: #e2e8f0;
+            background: #003b00;
             padding: 2px 5px;
             border-radius: 4px;
             overflow-wrap: anywhere;
         }
 
         a {
-            color: #1746a2;
+            color: #7fff00;
         }
 
         .note {
-            color: #475569;
+            color: #008f11;
         }
     </style>
 </head>
