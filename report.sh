@@ -96,7 +96,7 @@ cat > "$TEMP_FILE" <<EOF
     <header>
         <h1>Server Status Report</h1>
         <p>Week 3: Linux command line and Bash scripting</p>
-        <p>TODO: Add your own introduction.</p>
+        <p>This is an automatically updated server status report running on an Ubuntu Linux virtual machine in CSC cPouta, created by DeveMike.</p>
     </header>
 
     <section>
@@ -189,18 +189,17 @@ cat > "$TEMP_FILE" <<EOF
             Nginx serves this file at /viikko3/.
         </p>
         <p>
-            TODO: Explain the disk space function and one example
-            of piping from your own script.
+          The get_disk_status function takes the disk usage percentage and calls it usage. If usage is greater than or equal to WARNING_LIMIT (80), it prints WARNING. Otherwise it prints OK.</p>
+        <p>
+          Example of piping: <code>df -P / | awk 'NR == 2 {print &#36;5}' | tr -d '%'</code>. df -P / shows disk usage of the root filesystem in a fixed POSIX format. awk picks the fifth column from the second row, and tr removes the percent sign, because the if statement can only compare whole numbers.
         </p>
     </section>
 
     <section>
         <h2>Scheduling</h2>
-        <p>
-            TODO: State whether you used cron or a systemd timer.
-            Explain the schedule and how you ensured that it
-            continues after a reboot.
-        </p>
+          <p>
+	    I used cron. The schedule * * * * * means minute, hour, day, month and weekday, and a star means “every”, so the script runs every minute. The output is appended to a log file. The schedule continues after a reboot because the cron service is enabled and starts automatically at boot. 
+	  </p>
     </section>
 
     <section>
@@ -208,16 +207,12 @@ cat > "$TEMP_FILE" <<EOF
 
         <h3>Syntax check and manual execution</h3>
         <p>
-            TODO: Describe the results of running
-            <code>bash -n report.sh</code>
-            and executing the script manually.
+            <p><code>bash -n report.sh</code> reads the script and checks that the syntax is correct without running it. It found no errors and printed Syntax OK. When I ran <code>./report.sh</code> manually, it printed a log line (for example 14.11.2026 17:15:13 EET levy 4 % OK) and created index.html, and the new report was visible in the browser.</p>
         </p>
 
         <h3>Disk space status tests</h3>
         <p>
-            TODO: Test the status logic using temporary input values.
-            Record your actual results below and restore real disk
-            usage afterwards.
+            <p>I tested the status logic by temporarily adding a line <code>DISK_PERCENT=50</code> right after the df line, before the status is calculated. I ran the script, then changed the value to 80 and 90. Finally I removed the test line, and the real value (4 %, OK) was restored.</p>
         </p>
 
         <div class="table-container">
@@ -233,17 +228,17 @@ cat > "$TEMP_FILE" <<EOF
                     <tr>
                         <td>50%</td>
                         <td>OK</td>
-                        <td>TODO</td>
+                        <td>OK</td>
                     </tr>
                     <tr>
                         <td>80%</td>
                         <td>WARNING</td>
-                        <td>TODO</td>
+                        <td>WARNING</td>
                     </tr>
                     <tr>
                         <td>90%</td>
                         <td>WARNING</td>
-                        <td>TODO</td>
+                        <td>WARNING</td>
                     </tr>
                 </tbody>
             </table>
@@ -251,21 +246,21 @@ cat > "$TEMP_FILE" <<EOF
 
         <h3>Automatic updates</h3>
         <p>
-            TODO: Record the generation times of at least two
-            consecutive automatic updates.
+            The log showed two consecutive automatic updates at 17:37:01 and 17:38:01, so the report is updated every minute.
         </p>
 
         <h3>Reboot test</h3>
         <p>
-            TODO: Record when you rebooted the VM and whether the
-            Week 2 application and Week 3 page opened afterwards.
-            Include evidence that the report continued to update.
+            Before the reboot I ran <code>tail -n 2 ~/viikko3-report.log</code> to see the last log lines and wrote down the last update before the reboot (17:42:01). I checked the current uptime with <code>uptime -p</code> and restarted the VM with <code>sudo reboot</code> at about 17:43, which closed the SSH connection.
+        </p>
+         <p>
+	    After about a minute I logged in again. <code>uptime -p</code> showed "up 1 minute", so the machine had restarted. <code>systemctl is-active nginx cron viikko2 mariadb</code> printed active four times: Nginx serves the pages, cron runs the script, viikko2 is the Week 2 application and mariadb is its database. The log continued at 17:44:01 without any manual action. I also checked that both the Week 2 and Week 3 pages opened in the browser.
         </p>
     </section>
 
     <section>
         <h2>A problem solved or a lesson learned</h2>
-        <p>TODO: Describe one example from your own work.</p>
+        <p>At one point my script did not have the chmod and mv lines. Because of that the page did not update and temporary files were left in the folder. I added the lines and deleted the extra files.</p>
     </section>
 
     <footer>
